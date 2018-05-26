@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author zuza
  */
-public class KartaPacjenta extends Application {
+public class PatientCard extends Application {
     
     @Override
     public void start(Stage primaryStage) {
