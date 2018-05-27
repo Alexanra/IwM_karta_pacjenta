@@ -1,0 +1,13 @@
+# Maven 
+target/
+# IntelliJ project files 
+*.iml
+*.iws
+*.ipr
+.idea/
+# Misc
+*.swp
+release.properties
+pom.xml.releaseBackup
+pom.xml.tag
+
