@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 //import ca.uhn.fhir.model.dstu2.resource.Bundle;
 //import ca.uhn.fhir.model.dstu2.resource.Patient;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.gclient.StringClientParam;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,7 @@ public class PatientController {
         Bundle results = client
                 .search()
                 .forResource(Patient.class)
+                .where(new StringClientParam("family").matches().value("Abbott701"))
                 .returnBundle(Bundle.class)
                 .execute();
 
