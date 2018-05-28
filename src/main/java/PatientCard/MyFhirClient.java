@@ -1,6 +1,7 @@
 package PatientCard;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.api.EncodingEnum;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,5 +20,9 @@ public class MyFhirClient {
     void connectToClient() {
         this.ctx = FhirContext.forDstu3();
         this.client = ctx.newRestfulGenericClient(this.serverBase);
+        this.client.setEncoding(EncodingEnum.JSON);
+        this.client.setPrettyPrint(true);
+
     }
+
 }
