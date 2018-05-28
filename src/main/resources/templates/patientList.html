@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Patients</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <!--<input type="text" th:field="*{surname}" />-->
     <p th:text="'Found ' + ${result.size()} + ' patients'" />
+    <div th:text="'First patient id: \n' +  ${result.get(0)[2]}"/>
 
 </body>
 </html>

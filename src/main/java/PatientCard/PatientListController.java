@@ -10,9 +10,7 @@ import org.hl7.fhir.dstu3.model.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,31 +27,55 @@ public class PatientListController {
     @GetMapping("/")
     public String patientList(Model model) {
         // Perform a search
-        Bundle results = this.mfc.client
-                .search()
-                .forResource(Patient.class)
-                //.where(new StringClientParam("family").matches().value("Abbott701"))
-                .returnBundle(Bundle.class)
-                .execute();
-        getDataFromBundle(results);
+        if (nameId.isEmpty()) {
+            Bundle results = this.mfc.client
+                    .search()
+                    .forResource(Patient.class)
+                    //.where(new StringClientParam("family").matches().value(""))
+                    .returnBundle(Bundle.class)
+                    .execute();
+            getDataFromBundle(results, this.nameId);
 
-        total = results.getTotal() - 10;
+            total = results.getTotal() - 10;
 
-        while (total > 0) {
-            if (results.getLink(Bundle.LINK_NEXT) != null) {
-                // load next page
-                Bundle nextPage = this.mfc.client.loadPage().next(results).execute();
-                getDataFromBundle(nextPage);
-                total -= 10;
+            while (total > 0) {
+                if (results.getLink(Bundle.LINK_NEXT) != null) {
+                    // load next page
+                    Bundle nextPage = this.mfc.client.loadPage().next(results).execute();
+                    getDataFromBundle(nextPage, this.nameId);
+                    total -= 10;
+                }
             }
         }
-
         model.addAttribute("result", this.nameId);
         return "patientList";
     }
 
+    @GetMapping("/search={surname:.+}")
+    public String patientSurname(@PathVariable("surname") String surname, Model model) {
+        ArrayList<String[]> nameIdFiltered = new ArrayList<>();
 
-    private void getDataFromBundle(Bundle b) {
+        Bundle results = this.mfc.client
+                .search()
+                .forResource(Patient.class)
+                .where(new StringClientParam("family").matches().value(surname))
+                .returnBundle(Bundle.class)
+                .execute();
+        getDataFromBundle(results, nameIdFiltered);
+
+        while (results.getLink(Bundle.LINK_NEXT) != null) {
+                // load next page
+                results = this.mfc.client.loadPage().next(results).execute();
+                getDataFromBundle(results, nameIdFiltered);
+        }
+
+        model.addAttribute("result", nameIdFiltered);
+
+        return "patientList";
+    }
+
+
+    private void getDataFromBundle(Bundle b, ArrayList<String[]> list) {
         for(ListIterator<Bundle.BundleEntryComponent> iter = b.getEntry().listIterator(); iter.hasNext(); ) {
             Patient patient = (Patient) iter.next().getResource();
             String names = "";
@@ -64,7 +86,7 @@ public class PatientListController {
             String surname = patient.getNameFirstRep().getFamily();
             String id = patient.getIdElement().getIdPart();
             String[] patientInfo = {names, surname, id};
-            this.nameId.add(patientInfo);
+            list.add(patientInfo);
         }
     }
 
