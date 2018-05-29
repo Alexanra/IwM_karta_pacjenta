@@ -10,4 +10,4 @@ target/
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
-
+derby.log

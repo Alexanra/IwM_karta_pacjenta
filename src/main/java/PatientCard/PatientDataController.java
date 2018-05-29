@@ -65,6 +65,9 @@ public class PatientDataController {
             getMedRequestFormBundle(m, medicationRequests);
         }
 
+        model.addAttribute("patient", patient);
+        model.addAttribute("observations", observations);
+        model.addAttribute("medications", medicationRequests);
 
         return "patientData";
     }

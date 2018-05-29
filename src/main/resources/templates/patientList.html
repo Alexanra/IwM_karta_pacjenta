@@ -6,8 +6,16 @@
 </head>
 <body>
     <!--<input type="text" th:field="*{surname}" />-->
+    <h1>Patient List</h1>
     <p th:text="'Found ' + ${result.size()} + ' patients'" />
-    <div th:text="'First patient id: \n' +  ${result.get(0)[2]}"/>
+
+    <p th:text="'1. ' + ${result.get(0)[0]}"/>
+    <p th:text="'2. ' + ${result.get(1)[0]}"/>
+    <p th:text="'3. ' + ${result.get(2)[0]}"/>
+    <p th:text="'4. ' + ${result.get(3)[0]}"/>
+    <p th:text="'5. ' + ${result.get(4)[0]}"/>
+
+    <div th:text="'First patient id: ' +  ${result.get(0)[2]}"/>
 
 </body>
 </html>
