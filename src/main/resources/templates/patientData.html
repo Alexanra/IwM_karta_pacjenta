@@ -4,6 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <form action="http://localhost:8080">
+        <input type="submit" value="Back To List" />
+    </form>
+
     <div id="patient-data">
     <h1 th:text="'Patient ' +  ${patient.getNameFirstRep().getNameAsSingleString()} "/>
     <p th:text="'First Name: ' + ${patient.getNameFirstRep().getGiven()}" />
@@ -21,6 +25,9 @@
 
     <div id="patient-medication">
         <h2>Medications</h2>
+        <ul th:each="med, iter: ${medications}">
+            <li th:text="${med.getNoteFirstRep().getText()}" th:id="|td${iter.index}|"></li>
+        </ul>
     </div>
 </body>
 </html>
