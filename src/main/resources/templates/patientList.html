@@ -9,15 +9,18 @@
     <h1>Patient List</h1>
     <p th:text="'Found ' + ${result.size()} + ' patients'" />
 
+    <div id="search-bar">
+        <form th:action="'/search=a'">
+            <input type="text" placeholder="Search Patient" id="search">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <div>
     <ol th:each="data, iter: ${result}">
         <li><a th:href="'/patient=' + ${data[2]}" th:text="${iter.index} + '. ' + ${data[0]} + ' ' + ${data[1]}" th:id="|td${iter.index}|"></li>
     </ol>
     </div>
-
-
-
-    <div th:text="'First patient id: ' +  ${result.get(0)[2]}"/>
 
 </body>
 </html>
