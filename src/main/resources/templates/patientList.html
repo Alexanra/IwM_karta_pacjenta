@@ -3,24 +3,35 @@
 <head>
     <title>Patients</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
     <!--<input type="text" th:field="*{surname}" />-->
-    <h1>Patient List</h1>
-    <p th:text="'Found ' + ${result.size()} + ' patients'" />
-
+    <div id="header">
+        <img id="main_icon"  src="https://cdn.pixabay.com/photo/2017/05/15/23/47/stethoscope-icon-2316460_960_720.png">
+        <h1 id="main_title">Patient List</h1>
+    </div>
     <div id="search-bar">
         <form th:action="'/search=a'">
             <input type="text" placeholder="Search Patient" id="search">
             <button type="submit">Search</button>
         </form>
     </div>
-
-    <div>
-    <ol th:each="data, iter: ${result}">
-        <li><a th:href="'/patient=' + ${data[2]}" th:text="${iter.index} + '. ' + ${data[0]} + ' ' + ${data[1]}" th:id="|td${iter.index}|"></li>
-    </ol>
+    <div id="info">
+        <p id="count_patients" th:text="'Found ' + ${result.size()} + ' patients'" />
     </div>
+
+
+    <table id="patient-list">
+        <tr id="table-header">
+            <td>No.</td>
+            <td>Name</td>
+        </tr>
+        <tr th:each="data, iter: ${result}">
+            <td id="number" th:text="${iter.index+1}" th:id="|td${iter.index}|"></td>
+            <td id="name"><a th:href="'/patient=' + ${data[2]}" th:text="${data[0]} + ' ' + ${data[1]}"/></td>
+        </tr>
+    </table>
 
 </body>
 </html>
