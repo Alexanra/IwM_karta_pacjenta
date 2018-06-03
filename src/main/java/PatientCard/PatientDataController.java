@@ -68,6 +68,7 @@ public class PatientDataController {
         model.addAttribute("patient", patient);
         model.addAttribute("observations", observations);
         model.addAttribute("medications", medicationRequests);
+        model.addAttribute("id", id);
 
         return "patientData";
     }

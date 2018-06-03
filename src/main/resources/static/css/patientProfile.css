@@ -1,0 +1,45 @@
+h2 {
+    color: #4577C6;
+    background-color: linen;
+    text-shadow: 1px 1px gray;
+    border: 1px solid #4577C6;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#icon {
+    width: 75px;
+    height: 75px;
+    float: left;
+    display: inline-block;
+}
+
+#patient-name {
+    display: inline-block;
+    color: #4577C6;
+    text-align: center;
+}
+
+#back {
+    display: inline-block;
+    float: right;
+}
+
+#patient-data {
+    margin-left: 75px;
+    padding: 2px;
+    border-collapse: collapse;
+    width: 50%;
+    border: 1px solid black;
+    background-color: linen;
+}
+
+table {
+    border-collapse: collapse;
+    margin-left: 20px;
+}
+
+table, tr, td {
+    border: 1px solid black;
+}

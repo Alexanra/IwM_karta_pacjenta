@@ -2,32 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../static/css/patientProfile.css" th:href="@{/css/patientProfile.css}">
 </head>
 <body>
-    <form action="http://localhost:8080">
-        <input type="submit" value="Back To List" />
-    </form>
+    <div>
+        <img id="icon" th:src="@{/images/patient-icon.png}">
+        <h1 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
 
-    <div id="patient-data">
-    <h1 th:text="'Patient ' +  ${patient.getNameFirstRep().getNameAsSingleString()} "/>
-    <p th:text="'First Name: ' + ${patient.getNameFirstRep().getGiven()}" />
-    <p th:text="'Last Name: ' + ${patient.getNameFirstRep().getFamily()}" />
-    <p th:text="'Gender: ' + ${patient.getGender().getDisplay()}" />
-    <p th:text="'Birth date: ' + ${patient.getBirthDate().toString()}" ></p>
+        <form id="back" action="http://localhost:8080">
+            <input type="submit" value="Back To List" />
+        </form>
     </div>
+
+    <table id="patient-data">
+        <tr>
+            <td>First Name</td>
+            <td th:text="${patient.getNameFirstRep().getGiven()}"></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td th:text="${patient.getNameFirstRep().getFamily()}"></td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td th:text="${patient.getGender().getDisplay()}"></td>
+        </tr>
+        <tr>
+            <td>Birth Date</td>
+            <td th:text="${patient.getBirthDate().toString()}"></td>
+        </tr>
+    </table>
 
     <div id="patient-observations">
         <h2>Observations</h2>
-        <ul th:each="data, iterstat: ${observations}">
-            <li th:text="${data.getCode().getText()}" th:id="|td${iterstat.index}|"></li>
-        </ul>
+        <table>
+            <tr th:each="data, iterstat: ${observations}">
+                <td th:text="${data.getCode().getText()}" th:id="|td${iterstat.index}|"></td>
+            </tr>
+        </table>
     </div>
 
     <div id="patient-medication">
         <h2>Medications</h2>
-        <ul th:each="med, iter: ${medications}">
-            <li th:text="${med.getNoteFirstRep().getText()}" th:id="|td${iter.index}|"></li>
-        </ul>
+        <table>
+            <tr th:each="med, iter: ${medications}">
+                <td th:text="${med.getNoteFirstRep().getText()}" th:id="|td${iter.index}|"></td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

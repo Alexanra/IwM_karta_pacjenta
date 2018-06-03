@@ -3,14 +3,15 @@
 <head>
     <title>Patients</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" href="../static/css/patientList.css" th:href="@{/css/patientList.css}">
 </head>
 <body>
     <!--<input type="text" th:field="*{surname}" />-->
-    <div id="header">
-        <img id="main_icon"  src="https://cdn.pixabay.com/photo/2017/05/15/23/47/stethoscope-icon-2316460_960_720.png">
-        <h1 id="main_title">Patient List</h1>
+    <div>
+        <img id="icon" th:src="@{/images/stethoscope-icon.png}">
+        <h1 id="main-title">Patient List</h1>
     </div>
+
     <div id="search-bar">
         <form th:action="'/search=a'">
             <input type="text" placeholder="Search Patient" id="search">
@@ -18,7 +19,7 @@
         </form>
     </div>
     <div id="info">
-        <p id="count_patients" th:text="'Found ' + ${result.size()} + ' patients'" />
+        <p id="count-patients" th:text="'Found ' + ${result.size()} + ' patients'" />
     </div>
 
 
