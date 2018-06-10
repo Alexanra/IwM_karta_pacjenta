@@ -29,7 +29,19 @@
         </tr>
         <tr>
             <td>Birth Date</td>
-            <td th:text="${patient.getBirthDate().toString()}"></td>
+            <td th:text="${patient.getBirthDateElement().toHumanDisplay()}"></td>
+        </tr>
+        <tr th:if="${patient.hasDeceased()}">
+            <td>Death Date</td>
+            <td th:text="${patient.getDeceasedDateTimeType().toHumanDisplay()}"></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td th:text="${patient.getAddressFirstRep().getText()}"></td>
+        </tr>
+        <tr>
+            <td>Marital Status</td>
+            <td th:text="${patient.getMaritalStatus().getText()}"></td>
         </tr>
     </table>
 
