@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patients</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../static/css/patientList.css" th:href="@{/css/patientList.css}">
+</head>
+<body>
+
+<div>
+    <img id="icon" th:src="@{/images/stethoscope-icon.png}">
+    <h1 id="main-title" th:text="'Search Results: ' + ${query}" />
+
+</div>
+
+<div>
+    <form id="back" action="http://localhost:8080">
+        <input type="submit" value="Back To List" />
+    </form>
+</div>
+
+<div id="info">
+    <p id="count-patients" th:text="'Found ' + ${result.size()} + ' patients'" />
+</div>
+
+
+<table id="patient-list">
+    <tr id="table-header">
+        <td>No.</td>
+        <td>Name</td>
+    </tr>
+    <tr th:each="data, iter: ${result}">
+        <td id="number" th:text="${iter.index+1}" th:id="|td${iter.index}|"></td>
+        <td id="name"><a th:href="'/patient=' + ${data[2]}" th:text="${data[0]} + ' ' + ${data[1]}"/></td>
+    </tr>
+</table>
+
+</body>
+</html>
