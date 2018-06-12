@@ -26,7 +26,7 @@ public class PatientDataController {
     public String patientData(@PathVariable("id") String id, Model model) {
         Patient patient;
         ArrayList<String[]> observations = new ArrayList<>();
-        ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
+        ArrayList<String[]> medicationRequests = new ArrayList<>();
 
         Bundle p = mfc.client
                 .search()
@@ -72,13 +72,26 @@ public class PatientDataController {
                 .returnBundle(Bundle.class)
                 .execute();
 
-        getMedRequestFormBundle(m, medicationRequests);
+        try {
+            getMedRequestFormBundle(m, medicationRequests);
+        } catch (FHIRException e) {
+            e.printStackTrace();
+        }
 
         while (m.getLink(Bundle.LINK_NEXT) != null) {
             // load next page
             m = this.mfc.client.loadPage().next(m).execute();
-            getMedRequestFormBundle(m, medicationRequests);
+            try {
+                getMedRequestFormBundle(m, medicationRequests);
+            } catch (FHIRException e) {
+                e.printStackTrace();
+            }
         }
+        Collections.sort(medicationRequests,new Comparator<String[]>() {
+            public int compare(String[] strings, String[] otherStrings) {
+                return otherStrings[0].compareTo(strings[0]);
+            }
+        });
 
         model.addAttribute("patient", patient);
         model.addAttribute("observations", observations);
@@ -103,10 +116,18 @@ public class PatientDataController {
         }
     }
 
-    private void getMedRequestFormBundle (Bundle bundle, ArrayList<MedicationRequest> list) {
+    private void getMedRequestFormBundle (Bundle bundle, ArrayList<String[]> list) throws FHIRException {
         for(ListIterator<Bundle.BundleEntryComponent> iter = bundle.getEntry().listIterator(); iter.hasNext(); ) {
             MedicationRequest medicationRequest = (MedicationRequest) iter.next().getResource();
-            list.add(medicationRequest);
+            String[] array = new String[3];
+            array[0] = medicationRequest.getAuthoredOnElement().toHumanDisplay();
+            array[1] = ((CodeableConcept) medicationRequest.getExtension().get(0).getValue()).getText();
+            if (medicationRequest.hasMedicationCodeableConcept()) {
+                array[2] = medicationRequest.getMedicationCodeableConcept().getText();
+            } else {
+                array[2] = "";
+            }
+            list.add(array);
 
         }
     }
