@@ -48,11 +48,19 @@
     <div id="patient-observations">
         <h2>Observations</h2>
         <table>
+            <tr id="table-header">
+                <td>Date</td>
+                <td>Observation</td>
+                <td>Value</td>
+            </tr>
             <tr th:each="data, iterstat: ${observations}">
-                <td th:text="${data[0]}" th:id="|td${iterstat.index}|"></td>
+                <td th:text="${data[1]}" th:id="|td${iterstat.index}|"></td>
+                <td><a th:href="'/patient=' + ${patient.getIdElement().getIdPart()} + '/observation=' + ${data[0].replace(' ','_').replace('/','-')}" th:text="${data[0]}"></td>
+                <td th:text="${data[2]}+ ' ' + ${data[3]}"></td>
             </tr>
         </table>
     </div>
+
 
     <div id="patient-medication">
         <h2>Medications</h2>

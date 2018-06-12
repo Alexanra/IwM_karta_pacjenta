@@ -61,6 +61,7 @@ public class PlotDataController {
         }
         model.addAttribute("observations", observations);
         model.addAttribute("patient", patient);
+        model.addAttribute("patientId", id);
         return "patientPlot";
     }
 

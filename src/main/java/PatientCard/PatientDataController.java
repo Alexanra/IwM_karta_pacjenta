@@ -2,7 +2,6 @@ package PatientCard;
 
 
 import ca.uhn.fhir.rest.gclient.ReferenceClientParam;
-import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,13 +85,13 @@ public class PatientDataController {
         model.addAttribute("medications", medicationRequests);
         model.addAttribute("id", id);
 
-        return "patientData";
+        return "patientProfile";
     }
 
     private void getObseravtionsFormBundle (Bundle bundle, ArrayList<String[]> list) throws FHIRException {
         for(ListIterator<Bundle.BundleEntryComponent> iter = bundle.getEntry().listIterator(); iter.hasNext(); ) {
             Observation observation = (Observation) iter.next().getResource();
-            if(observation.getCode().hasText()){
+            if(observation.getCode().hasText() && observation.hasValueQuantity()){
                 String[] array = new String[4];
                 array[0] = observation.getCode().getText();
                 array[1] = observation.getEffectiveDateTimeType().toHumanDisplay();

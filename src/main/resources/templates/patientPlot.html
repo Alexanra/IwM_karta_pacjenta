@@ -4,8 +4,9 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js}"></script>
-    <link rel="stylesheet" type="text/css" href="../static/css/patientPlot.css" th:href="@{/css/patientPlot.css}">
     <link rel="stylesheet" type="text/css" href="../static/css/patientProfile.css" th:href="@{/css/patientProfile.css}">
+    <!--<link rel="stylesheet" type="text/css" href="../static/css/patientPlot.css" th:href="@{/css/patientPlot.css}">-->
+
 </head>
 <body>
 
@@ -13,23 +14,24 @@
     <img id="icon" th:src="@{/images/patient-icon.png}">
     <h1 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
 
-    <form id="back" action="http://localhost:8080">
-        <input type="submit" value="Back To List" />
+    <form id="back" th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}">
+        <input type="submit" value="Back To Patient" />
     </form>
 </div>
 
-<canvas id="myChart" width="1600" height="900"></canvas>
+<canvas id="myChart"></canvas>
 <script th:inline="javascript">
 /*<![CDATA[*/
     // Our labels along the x-axis
     var obs = /*[[${observations}]]*/ [[0,0,0]];
+    var title = /*[[${observations[0][0]}]]*/ "";
     var dates = [];
     var values = [];
     for(var i=0; i<obs.length; i++) {
         values.push(Number(obs[i][2]).toFixed(2));
-        dates.push(obs[i][1]);
+        dates.push(new Date(obs[i][1].split(" ")[0]));
     }
-
+console.log(dates);
     var myChart = new Chart(document.getElementById("myChart"), {
         type: 'line',
         data: {
@@ -42,11 +44,25 @@
                 }
             ]
         },
-        ticks: {
-            callback: function (value) {
-                return
+        options: {
+            legend: {
+                display: false
+            },
+            title: {
+              display: true,
+              text: title
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return value.getDate() + "-" + (value.getMonth()+1) + "-" + value.getFullYear();
+                        }
+                    }
+                }]
             }
         }
+
     });
 /*]]>*/
 </script>
