@@ -95,7 +95,7 @@
     </table>
 
     <br/>
-    <form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edit'" method="post">
+    <form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edit'" method="get">
         <button type="submit">Edit Patient Data</button>
     </form>
     <br/>

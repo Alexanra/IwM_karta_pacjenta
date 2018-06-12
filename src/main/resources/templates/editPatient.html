@@ -16,7 +16,7 @@
 
 
 <!--<form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edited'" th:object="${patientAddress}" method="post">-->
-<form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/editdone'" th:object="${patientAddress}" method="post">
+<form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edited'" th:object="${patientAddress}" method="post">
     <div> <p>Zipcode</p> <input type="text" th:placeholder="${patientAddress.zipCode}" th:field="*{zipCode}"> </div>
     <div> <p>City</p> <input type="text" th:placeholder="${patientAddress.city}" th:field="*{city}"> </div>
     <div> <p>Country</p> <input type="text" th:placeholder="${patientAddress.country}" th:field="*{country}"></div>

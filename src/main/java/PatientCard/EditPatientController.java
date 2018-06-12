@@ -45,7 +45,7 @@ public class EditPatientController {
         return "editPatient";//"redirect:/patient="+id;
     }
 
-    @PostMapping("/patient={id:.+}/editdone")
+    @PostMapping("/patient={id:.+}/edited")
     public String editedData(@PathVariable("id") String id, @ModelAttribute Edit edit, Model model) {
 
         Address address = new Address();
