@@ -6,11 +6,13 @@
 </head>
 <body>
 
-
+<table>
+    <tr th:each="data, iterstat: ${observations}">
+        <td th:text="${data[1]} + ' ' + ${data[2]}" th:id="|td${iterstat.index}|"></td>
+    </tr>
+</table>
 <p th:text="${observations.size()}" />
-<p th:text="${observations.get(0)[0]}" />
-<p th:text="${observations.get(0)[1]}" />
-<p th:text="${observations.get(0)[2]} + ${observations.get(0)[3]}" />
+
 
 </body>
 </html>

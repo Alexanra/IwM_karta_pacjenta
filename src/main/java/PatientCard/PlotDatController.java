@@ -74,7 +74,7 @@ public class PlotDatController {
         }
         Collections.sort(list,new Comparator<String[]>() {
             public int compare(String[] strings, String[] otherStrings) {
-                return strings[1].compareTo(otherStrings[1]);
+                return strings[2].compareTo(otherStrings[2]);
             }
         });
     }
