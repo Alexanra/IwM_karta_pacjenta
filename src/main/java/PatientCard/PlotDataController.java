@@ -28,6 +28,16 @@ public class PlotDataController {
     public String observationPlotData(@PathVariable("id") String id, @PathVariable("name") String name, Model model) {
         ArrayList<String[]> observations = new ArrayList<>();
         //name = "Estimated Glomerular Filtration Rate";
+
+        Patient patient;
+        Bundle p = mfc.client
+                .search()
+                .forResource(Patient.class)
+                .where(new TokenClientParam("_id").exactly().code(id))
+                .returnBundle(Bundle.class)
+                .execute();
+        patient = (Patient) p.getEntry().get(0).getResource();
+
         Bundle o = this.mfc.client
                 .search()
                 .forResource(Observation.class)
@@ -50,6 +60,7 @@ public class PlotDataController {
             }
         }
         model.addAttribute("observations", observations);
+        model.addAttribute("patient", patient);
         return "patientPlot";
     }
 
