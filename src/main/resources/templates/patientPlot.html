@@ -7,17 +7,10 @@
 <body>
 
 
-
-
-
-
-PROSZE NIE RUSZAJ MI TEGO PÓKI CO!!!!!!!
-
-
-
-<p th:text="${observations.get(0).getEffectiveDateTimeType().toHumanDisplay()}" />
-<p th:text="${observations.get(0).getCode().getText()}" />
-<p th:text="${String.valueOf(observations.get(0).getValueQuantity().getValue())}   ${observations.get(0).getValueQuantity().getCode()}" />
+<p th:text="${observations.size()}" />
+<p th:text="${observations.get(0)[0]}" />
+<p th:text="${observations.get(0)[1]}" />
+<p th:text="${observations.get(0)[2]} + ${observations.get(0)[3]}" />
 
 </body>
 </html>
