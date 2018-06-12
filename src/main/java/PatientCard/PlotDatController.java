@@ -39,6 +39,16 @@ public class PlotDatController {
         } catch (FHIRException e) {
             e.printStackTrace();
         }
+
+        while (o.getLink(Bundle.LINK_NEXT) != null) {
+            // load next page
+            o = this.mfc.client.loadPage().next(o).execute();
+            try {
+                getObseravtionsFormBundle(o, observations, name);
+            } catch (FHIRException e) {
+                e.printStackTrace();
+            }
+        }
         model.addAttribute("observations", observations);
         return "patientPlot";
     }
@@ -47,7 +57,7 @@ public class PlotDatController {
         for(ListIterator<Bundle.BundleEntryComponent> iter = bundle.getEntry().listIterator(); iter.hasNext(); ) {
             Observation observation = (Observation) iter.next().getResource();
             if(observation.getCode().hasText()){
-                if (observation.getCode().getText().replace(" ", "_").equals(name)) {
+                if (observation.getCode().getText().replace(" ", "_").replace("/", "-").equals(name)) {
                     String[] array = new String[4];
                     array[0] = observation.getCode().getText();
                     array[1] = observation.getEffectiveDateTimeType().toHumanDisplay();
