@@ -3,16 +3,53 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/patientPlot.css" th:href="@{/css/patientPlot.css}">
+    <link rel="stylesheet" type="text/css" href="../static/css/patientProfile.css" th:href="@{/css/patientProfile.css}">
 </head>
 <body>
 
-<table>
-    <tr th:each="data, iterstat: ${observations}">
-        <td th:text="${data[1]} + ' ' + ${data[2]}" th:id="|td${iterstat.index}|"></td>
-    </tr>
-</table>
-<p th:text="${observations.size()}" />
+<div>
+    <img id="icon" th:src="@{/images/patient-icon.png}">
+    <h1 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
 
+    <form id="back" action="http://localhost:8080">
+        <input type="submit" value="Back To List" />
+    </form>
+</div>
+
+<canvas id="myChart" width="1600" height="900"></canvas>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    // Our labels along the x-axis
+    var obs = /*[[${observations}]]*/ [[0,0,0]];
+    var dates = [];
+    var values = [];
+    for(var i=0; i<obs.length; i++) {
+        values.push(Number(obs[i][2]).toFixed(2));
+        dates.push(obs[i][1]);
+    }
+
+    var myChart = new Chart(document.getElementById("myChart"), {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [
+                {
+                    data: values,
+                    fill: false,
+                    borderColor: "#4577C6"
+                }
+            ]
+        },
+        ticks: {
+            callback: function (value) {
+                return
+            }
+        }
+    });
+/*]]>*/
+</script>
 
 </body>
 </html>
