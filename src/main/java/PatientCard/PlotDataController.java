@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.ListIterator;
 
 @Controller
-public class PlotDatController {
+public class PlotDataController {
 
     @Autowired
     MyFhirClient mfc;
@@ -66,11 +66,7 @@ public class PlotDatController {
 
                     list.add(array);
                 }
-                //observation.getEffectiveDateTimeType().toHumanDisplay()
-                ;
             }
-
-
         }
         Collections.sort(list,new Comparator<String[]>() {
             public int compare(String[] strings, String[] otherStrings) {

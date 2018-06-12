@@ -5,6 +5,7 @@ import ca.uhn.fhir.rest.gclient.ReferenceClientParam;
 import ca.uhn.fhir.rest.gclient.StringClientParam;
 import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ListIterator;
 
 @Controller
@@ -24,7 +27,7 @@ public class PatientDataController {
     @GetMapping("/patient={id:.+}")
     public String patientData(@PathVariable("id") String id, Model model) {
         Patient patient;
-        ArrayList<Observation> observations = new ArrayList<>();
+        ArrayList<String[]> observations = new ArrayList<>();
         ArrayList<MedicationRequest> medicationRequests = new ArrayList<>();
 
         Bundle p = mfc.client
@@ -42,13 +45,27 @@ public class PatientDataController {
                 .returnBundle(Bundle.class)
                 .execute();
 
-        getObseravtionsFormBundle(o, observations);
+        try {
+            getObseravtionsFormBundle(o, observations);
+        } catch (FHIRException e) {
+            e.printStackTrace();
+        }
 
         while (o.getLink(Bundle.LINK_NEXT) != null) {
             // load next page
             o = this.mfc.client.loadPage().next(o).execute();
-            getObseravtionsFormBundle(o, observations);
+            try {
+                getObseravtionsFormBundle(o, observations);
+            } catch (FHIRException e) {
+                e.printStackTrace();
+            }
         }
+
+        Collections.sort(observations,new Comparator<String[]>() {
+            public int compare(String[] strings, String[] otherStrings) {
+                return otherStrings[1].compareTo(strings[1]);
+            }
+        });
 
         Bundle m = this.mfc.client
                 .search()
@@ -73,10 +90,17 @@ public class PatientDataController {
         return "patientData";
     }
 
-    private void getObseravtionsFormBundle (Bundle bundle, ArrayList<Observation> list) {
+    private void getObseravtionsFormBundle (Bundle bundle, ArrayList<String[]> list) throws FHIRException {
         for(ListIterator<Bundle.BundleEntryComponent> iter = bundle.getEntry().listIterator(); iter.hasNext(); ) {
             Observation observation = (Observation) iter.next().getResource();
-            list.add(observation);
+            if(observation.getCode().hasText()){
+                String[] array = new String[4];
+                array[0] = observation.getCode().getText();
+                array[1] = observation.getEffectiveDateTimeType().toHumanDisplay();
+                array[2] = String.valueOf(observation.getValueQuantity().getValue());
+                array[3] = observation.getValueQuantity().getCode();
+                list.add(array);
+            }
 
         }
     }
