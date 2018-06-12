@@ -1,12 +1,70 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js}"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/patientProfile.css" th:href="@{/css/patientProfile.css}">
     <!--<link rel="stylesheet" type="text/css" href="../static/css/patientPlot.css" th:href="@{/css/patientPlot.css}">-->
+    <script th:inline="javascript">
+        function chartFilter() {
+            /*<![CDATA[*/
+            // Our labels along the x-axis
+            var obs = /*[[${observations}]]*/ [[0,0,0]];
+            var title = /*[[${observations[0][0]}]]*/ "";
+            var dates = [];
+            var values = [];
+            var yourSelect = document.getElementById( "filter_date" );
+            var yy = parseInt(yourSelect.options[ yourSelect.selectedIndex ].value);
 
+            // Declare variables
+            var input, filter, table, tr, td, i;
+
+            // Timestamp
+            var ts = Date.now() - yy * 12 * 30 * 24 * 3600 * 1000;
+            for(var i=0; i<obs.length; i++) {
+                if (Date.parse(obs[i][1]) > ts) {
+                    values.push(Number(obs[i][2]).toFixed(2));
+                    dates.push(new Date(obs[i][1].split(" ")[0]));
+                }
+            }
+            console.log(dates);
+            var myChart = new Chart(document.getElementById("myChart"), {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            data: values,
+                            fill: false,
+                            borderColor: "#4577C6"
+                        }
+                    ]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: title
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value.getDate() + "-" + (value.getMonth()+1) + "-" + value.getFullYear();
+                                }
+                            }
+                        }]
+                    }
+                }
+
+            });
+            /*]]>*/
+        }
+    </script>
 </head>
 <body>
 
@@ -17,55 +75,25 @@
     <form id="back" th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}">
         <input type="submit" value="Back To Patient" />
     </form>
+
+
 </div>
 
 <canvas id="myChart"></canvas>
-<script th:inline="javascript">
-/*<![CDATA[*/
-    // Our labels along the x-axis
-    var obs = /*[[${observations}]]*/ [[0,0,0]];
-    var title = /*[[${observations[0][0]}]]*/ "";
-    var dates = [];
-    var values = [];
-    for(var i=0; i<obs.length; i++) {
-        values.push(Number(obs[i][2]).toFixed(2));
-        dates.push(new Date(obs[i][1].split(" ")[0]));
-    }
 
-    var myChart = new Chart(document.getElementById("myChart"), {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [
-                {
-                    data: values,
-                    fill: false,
-                    borderColor: "#4577C6"
-                }
-            ]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            title: {
-              display: true,
-              text: title
-            },
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        callback: function(value, index, values) {
-                            return value.getDate() + "-" + (value.getMonth()+1) + "-" + value.getFullYear();
-                        }
-                    }
-                }]
-            }
-        }
 
-    });
-/*]]>*/
-</script>
+<div class="row">
+    <select class="form-control" style="width: 300px;" id="filter_date">
+        <option value="40">Pełen okres</option>
+        <option value="10">Ostatnie 10 lat</option>
+        <option value="5">Ostatnie 5 lat</option>
+        <option value="3">Ostatnie 3 lata</option>
+        <option value="2">Ostatnie 2 lata</option>
+        <option value="1">Ostatni rok </option>
+    </select>
+    &nbsp;
+    <button type="button" class="btn btn-info" onclick="chartFilter(3);">Filtruj dane</button>
+</div>
 
 </body>
 </html>
