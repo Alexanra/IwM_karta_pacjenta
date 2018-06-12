@@ -21,7 +21,7 @@
             tr = table.getElementsByTagName("tr");
 
             // Loop through all table rows, and hide those who don't match the search query
-            for (i = 0; i < tr.length; i++) {
+            for (i = 1; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
                     tr_ts = Date.parse(td.innerHTML);
@@ -85,8 +85,8 @@
         <div class="row">
             <select class="form-control" style="width: 300px;" id="filter_date">
                 <option value="40">Pełen okres</option>
-                <option value="10">Ostatni 10 lat</option>
-                <option value="5">Ostatni 5 lat</option>
+                <option value="10">Ostatnie 10 lat</option>
+                <option value="5">Ostatnie 5 lat</option>
                 <option value="3">Ostatnie 3 lata</option>
                 <option value="2">Ostatnie 2 lata</option>
                 <option value="1">Ostatni rok </option>
