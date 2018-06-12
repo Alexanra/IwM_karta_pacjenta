@@ -1,0 +1,36 @@
+#icon {
+    width: 75px;
+    height: 75px;
+    float: left;
+    display: inline-block;
+}
+
+#patient-name {
+    display: inline-block;
+    color: #4577C6;
+    text-align: center;
+}
+
+h1 {
+    color: #4577C6;
+    background-color: linen;
+    text-shadow: 1px 1px gray;
+    border: 1px solid #4577C6;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+p {
+    width: 100px;
+    display: inline-block;
+    float: left;
+
+}
+
+input {
+    margin: 5px;
+    display: inline-block;
+    
+}
+

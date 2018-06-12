@@ -23,17 +23,9 @@ public class EditPatientController {
     MyFhirClient mfc;
 
     @GetMapping("/patient={id:.+}/edit")
-    public String editData(@PathVariable("id") String id,
-                           @ModelAttribute("city") String city,
-                           @ModelAttribute("country") String country,
-                           @ModelAttribute("postalCode") String postalCode,
-                           Model model) {
-        Address address = new Address();
-        address.setCity(city);
-        address.setCountry(country);
-        address.setPostalCode(postalCode);
-//        ArrayList<Address> addresses = new ArrayList<>();
-//        addresses.add(address);
+    public String editData(@PathVariable("id") String id, Model model) {
+
+        Edit edit = new Edit();
 
         Bundle p = mfc.client
                 .search()
@@ -43,8 +35,35 @@ public class EditPatientController {
                 .execute();
 
         Patient patient = (Patient) p.getEntry().get(0).getResource();
+
+        edit.setCity(patient.getAddressFirstRep().getCity());
+        edit.setCountry(patient.getAddressFirstRep().getCountry());
+        edit.setZipCode(patient.getAddressFirstRep().getPostalCode());
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("patientAddress", edit);
+        return "editPatient";//"redirect:/patient="+id;
+    }
+
+    @PostMapping("/patient={id:.+}/editdone")
+    public String editedData(@PathVariable("id") String id, @ModelAttribute Edit edit, Model model) {
+
+        Address address = new Address();
+        address.setCity(edit.getCity());
+        address.setCountry(edit.getCountry());
+        address.setPostalCode(edit.getZipCode());
         ArrayList<Address> addresses = new ArrayList();
         addresses.add(address);
+
+        Bundle p = mfc.client
+                .search()
+                .forResource(Patient.class)
+                .where(new TokenClientParam("_id").exactly().code(id))
+                .returnBundle(Bundle.class)
+                .execute();
+
+        Patient patient = (Patient) p.getEntry().get(0).getResource();
+
         for (Address a: patient.getAddress()) {
             addresses.add(a);
         }
@@ -54,7 +73,9 @@ public class EditPatientController {
                 .resource(patient)
                 .execute();
 
-        return "editPatient";//"redirect:/patient="+id;
+        return "redirect:/patient="+id;
     }
+
+
 }
 

@@ -31,7 +31,7 @@
         values.push(Number(obs[i][2]).toFixed(2));
         dates.push(new Date(obs[i][1].split(" ")[0]));
     }
-console.log(dates);
+
     var myChart = new Chart(document.getElementById("myChart"), {
         type: 'line',
         data: {

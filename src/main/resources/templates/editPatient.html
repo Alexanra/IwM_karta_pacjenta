@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit Patient</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/patientEdit.css" th:href="@{/css/patientEdit.css}">
+
 </head>
 <body>
 
 <h1>Edit Patient</h1>
-<h2 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
+<div>
+    <img id="icon" th:src="@{/images/patient-icon.png}">
+    <h2 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
+</div>
 
-<form th:action="@{/search}" th:object="${query}" method="post">
-    Zipcode <input type="text" placeholder="Zipcode" th:field="*{text}">
-    City <input type="text" placeholder="City" th:field="*{text}">
-    Country <input type="text" placeholder="Country" th:field="*{text}">
+
+<!--<form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edited'" th:object="${patientAddress}" method="post">-->
+<form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/editdone'" th:object="${patientAddress}" method="post">
+    <div> <p>Zipcode</p> <input type="text" th:placeholder="${patientAddress.zipCode}" th:field="*{zipCode}"> </div>
+    <div> <p>City</p> <input type="text" th:placeholder="${patientAddress.city}" th:field="*{city}"> </div>
+    <div> <p>Country</p> <input type="text" th:placeholder="${patientAddress.country}" th:field="*{country}"></div>
     <button type="submit">Save</button>
 </form>
 
