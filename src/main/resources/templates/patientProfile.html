@@ -3,6 +3,37 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="../static/css/patientProfile.css" th:href="@{/css/patientProfile.css}">
+
+    <script>
+        function tableFilter() {
+
+
+            var yourSelect = document.getElementById( "filter_date" );
+            var yy = parseInt(yourSelect.options[ yourSelect.selectedIndex ].value);
+
+            // Declare variables
+            var input, filter, table, tr, td, i;
+
+            // Timestamp
+            var ts = Date.now() - yy * 12 * 30 * 24 * 3600 * 1000;
+
+            table = document.getElementById("observations-timeline");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    tr_ts = Date.parse(td.innerHTML);
+                    if (tr_ts > ts) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
     <div>
@@ -13,6 +44,8 @@
             <input type="submit" value="Back To List" />
         </form>
     </div>
+
+
 
     <table id="patient-data">
         <tr>
@@ -45,9 +78,25 @@
         </tr>
     </table>
 
+
+
     <div id="patient-observations">
         <h2>Observations</h2>
-        <table>
+        <div class="row">
+            <select class="form-control" style="width: 300px;" id="filter_date">
+                <option value="40">Pełen okres</option>
+                <option value="10">Ostatni 10 lat</option>
+                <option value="5">Ostatni 5 lat</option>
+                <option value="3">Ostatnie 3 lata</option>
+                <option value="2">Ostatnie 2 lata</option>
+                <option value="1">Ostatni rok </option>
+            </select>
+            &nbsp;
+            <button type="button" class="btn btn-info" onclick="tableFilter(3);">Filtruj dane</button>
+        </div>
+        <br/>
+
+        <table id="observations-timeline">
             <tr id="table-header">
                 <td>Date</td>
                 <td>Observation</td>

@@ -1,7 +1,9 @@
 package PatientCard;
 
 import ca.uhn.fhir.rest.api.MethodOutcome;
+import ca.uhn.fhir.rest.gclient.TokenClientParam;
 import org.hl7.fhir.dstu3.model.Address;
+import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,11 +32,23 @@ public class EditPatientController {
         address.setCity(city);
         address.setCountry(country);
         address.setPostalCode(postalCode);
-        ArrayList<Address> addresses = new ArrayList<>();
+//        ArrayList<Address> addresses = new ArrayList<>();
+//        addresses.add(address);
+
+        Bundle p = mfc.client
+                .search()
+                .forResource(Patient.class)
+                .where(new TokenClientParam("_id").exactly().code(id))
+                .returnBundle(Bundle.class)
+                .execute();
+
+        Patient patient = (Patient) p.getEntry().get(0).getResource();
+        ArrayList<Address> addresses = new ArrayList();
         addresses.add(address);
-        Patient patient = new Patient();
+        for (Address a: patient.getAddress()) {
+            addresses.add(a);
+        }
         patient.setAddress(addresses);
-        patient.setId(id);
 
         MethodOutcome outcome = mfc.client.update()
                 .resource(patient)
