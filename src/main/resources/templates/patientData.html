@@ -49,7 +49,7 @@
         <h2>Observations</h2>
         <table>
             <tr th:each="data, iterstat: ${observations}">
-                <td th:text="${data.getCode().getText()}" th:id="|td${iterstat.index}|"></td>
+                <td th:text="${data[0]}" th:id="|td${iterstat.index}|"></td>
             </tr>
         </table>
     </div>
