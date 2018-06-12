@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ListIterator;
 
 @Controller
@@ -60,5 +62,11 @@ public class PlotDatController {
 
 
         }
+        Collections.sort(list,new Comparator<String[]>() {
+            public int compare(String[] strings, String[] otherStrings) {
+                return strings[1].compareTo(otherStrings[1]);
+            }
+        });
     }
+
 }
