@@ -32,6 +32,22 @@
                     }
                 }
             }
+
+            table = document.getElementById("medication-timeline");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    tr_ts = Date.parse(td.innerHTML);
+                    if (tr_ts > ts) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
         }
     </script>
 </head>
@@ -78,26 +94,27 @@
         </tr>
     </table>
 
+    <br/>
     <form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edit'" method="post">
         <button type="submit">Edit Patient Data</button>
     </form>
+    <br/>
+    <div class="row">
+        <select class="form-control" style="width: 300px;" id="filter_date">
+            <option value="40">Pełen okres</option>
+            <option value="10">Ostatnie 10 lat</option>
+            <option value="5">Ostatnie 5 lat</option>
+            <option value="3">Ostatnie 3 lata</option>
+            <option value="2">Ostatnie 2 lata</option>
+            <option value="1">Ostatni rok </option>
+        </select>
+        &nbsp;
+        <button type="button" class="btn btn-info" onclick="tableFilter(3);">Filtruj dane</button>
+    </div>
+
 
     <div id="patient-observations">
         <h2>Observations</h2>
-        <div class="row">
-            <select class="form-control" style="width: 300px;" id="filter_date">
-                <option value="40">Pełen okres</option>
-                <option value="10">Ostatnie 10 lat</option>
-                <option value="5">Ostatnie 5 lat</option>
-                <option value="3">Ostatnie 3 lata</option>
-                <option value="2">Ostatnie 2 lata</option>
-                <option value="1">Ostatni rok </option>
-            </select>
-            &nbsp;
-            <button type="button" class="btn btn-info" onclick="tableFilter(3);">Filtruj dane</button>
-        </div>
-        <br/>
-
         <table id="observations-timeline">
             <tr id="table-header">
                 <td>Date</td>
@@ -115,7 +132,7 @@
 
     <div id="patient-medication">
         <h2>Medications</h2>
-        <table>
+        <table id="medication-timeline">
             <tr id="table-header">
                 <td>Date</td>
                 <td>Prescription</td>
@@ -128,5 +145,6 @@
             </tr>
         </table>
     </div>
+    <br/><br/><br/><br/>
 </body>
 </html>
