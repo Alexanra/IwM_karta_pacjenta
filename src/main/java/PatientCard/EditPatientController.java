@@ -54,7 +54,7 @@ public class EditPatientController {
                 .resource(patient)
                 .execute();
 
-        return "redirect:/patient="+id;
+        return "editPatient";//"redirect:/patient="+id;
     }
 }
 

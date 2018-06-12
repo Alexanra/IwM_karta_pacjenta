@@ -6,5 +6,17 @@
 </head>
 <body>
 
+<h1>Edit Patient</h1>
+<h2 id="patient-name" th:text="${patient.getNameFirstRep().getNameAsSingleString()}" />
+
+<form th:action="@{/search}" th:object="${query}" method="post">
+    Zipcode <input type="text" placeholder="Zipcode" th:field="*{text}">
+    City <input type="text" placeholder="City" th:field="*{text}">
+    Country <input type="text" placeholder="Country" th:field="*{text}">
+    <button type="submit">Save</button>
+</form>
+
+
+
 </body>
 </html>

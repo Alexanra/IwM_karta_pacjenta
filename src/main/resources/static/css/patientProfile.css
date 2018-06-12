@@ -46,7 +46,8 @@ h2 {
 table {
     margin-left: 10px;
     border-collapse: collapse;
-    width: 50%;
+    width: 75%;
+    margin: auto;
 }
 
 

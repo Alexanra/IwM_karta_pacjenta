@@ -70,7 +70,7 @@
         </tr>
         <tr>
             <td>Address</td>
-            <td th:text="${patient.getAddressFirstRep().getText()}"></td>
+            <td th:text="${patient.getAddressFirstRep().getPostalCode()} + ' ' + ${patient.getAddressFirstRep().getCity()} + ', ' + ${patient.getAddressFirstRep().getCountry()} "></td>
         </tr>
         <tr>
             <td>Marital Status</td>
@@ -78,7 +78,9 @@
         </tr>
     </table>
 
-
+    <form th:action="'http://localhost:8080/patient='+${patient.getIdElement().getIdPart()}+'/edit'" method="post">
+        <button type="submit">Edit Patient Data</button>
+    </form>
 
     <div id="patient-observations">
         <h2>Observations</h2>
@@ -111,13 +113,20 @@
     </div>
 
 
-    <!--<div id="patient-medication">-->
-        <!--<h2>Medications</h2>-->
-        <!--<table>-->
-            <!--<tr th:each="med, iter: ${medications}">-->
-                <!--<td th:text="${med.getNoteFirstRep().getText()}" th:id="|td${iter.index}|"></td>-->
-            <!--</tr>-->
-        <!--</table>-->
-    <!--</div>-->
+    <div id="patient-medication">
+        <h2>Medications</h2>
+        <table>
+            <tr id="table-header">
+                <td>Date</td>
+                <td>Prescription</td>
+                <td>Medication</td>
+            </tr>
+            <tr th:each="med, iter: ${medications}">
+                <td th:text="${med[0]}" th:id="|td${iter.index}|"></td>
+                <td th:text="${med[1]}" th:id="|td${iter.index}|"></td>
+                <td th:text="${med[2]}" th:id="|td${iter.index}|"></td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
