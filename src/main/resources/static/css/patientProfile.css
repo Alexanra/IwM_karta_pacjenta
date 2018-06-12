@@ -25,6 +25,14 @@
     background-color: linen;
 }
 
+#table-header{
+    height: 50px;
+    background-color: #19B7D3;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+}
+
 h2 {
     color: #4577C6;
     background-color: linen;
@@ -44,13 +52,7 @@ table {
     width: 50%;
 }
 
-#table-header{
-    height: 50px;
-    background-color: #19B7D3;
-    color: white;
-    font-weight: bolder;
-    text-align: center;
-}
+
 
 tr {
     height: 30px;
